@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+
+    <!-- Instructions:
+
+      Build libgmp, Nettle, and GnuTLS using Msys2/MinGW, install to ~/prefix
+
+      Generate import libraries for the DLLs:      
+        cd ~/prefix/lib
+        for i in ../bin/*.dll; do
+          gendef $i
+        done
+        for i in *.def; do
+          dlltool -d $i -D ${i%def}.dll -l ${i%def}.lib
+        done
+
+    -->
+
+    <!-- EDIT THE LINES BELOW -->
+
+    <dependency_include>x:\msys64\home\user\prefix\include</dependency_include>
+    <dependency_lib>x:\msys64\home\user\prefix\lib</dependency_lib>
+    <dependency_bin>x:\msys64\home\user\prefix\bin;x:\msys64\mingw64\bin</dependency_bin>
+    <!-- Change library version numbers if needed -->
+    <dependency_imports>libgnutls-30.lib;libhogweed-6.lib;libnettle-8.lib</dependency_imports>
+
+    <!-- EDIT THE LINES ABOVE -->
+
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(dependency_include);$(IncludePath)</IncludePath>
+    <LibraryPath>$(dependency_lib);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="dependency_include">
+      <Value>$(dependency_include)</Value>
+    </BuildMacro>
+    <BuildMacro Include="dependency_lib">
+      <Value>$(dependency_lib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="dependency_bin">
+      <Value>$(dependency_bin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="dependency_imports">
+      <Value>$(dependency_imports)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
